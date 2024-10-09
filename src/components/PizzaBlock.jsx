@@ -1,9 +1,15 @@
 import { useState } from 'react'
 
-export default function PizzaBlock({ title, price }) {
+export default function PizzaBlock({ title, price, types, sizes }) {
   const [pizzaCount, setPizzaCount] = useState(0)
+  const [indexType, setOnIndexType] = useState(0)
+  const [indexSize, setOnIndexSize] = useState(0)
 
-  const addPizza = () => setPizzaCount(pizzaCount + 1)
+  const onAddPizza = () => setPizzaCount(pizzaCount + 1)
+  const onChangeTypes = (index) => setOnIndexType(index)
+  const onChangeSizes = (index) => setOnIndexSize(index)
+
+  const typesName = ['тонкое', 'традиционное']
 
   return (
     <div className="pizza-block">
@@ -15,18 +21,31 @@ export default function PizzaBlock({ title, price }) {
       <h4 className="pizza-block__title">{title}</h4>
       <div className="pizza-block__selector">
         <ul>
-          <li className="active">тонкое</li>
-          <li>традиционное</li>
+          {types.map((item, index) => (
+            <li
+              key={index}
+              onClick={() => onChangeTypes(index)}
+              className={item === indexType ? 'active' : ''}
+            >
+              {typesName[item]}
+            </li>
+          ))}
         </ul>
         <ul>
-          <li className="active">26 см.</li>
-          <li>30 см.</li>
-          <li>40 см.</li>
+          {sizes.map((item, i) => (
+            <li
+              key={i}
+              onClick={() => onChangeSizes(i)}
+              className={i === indexSize ? 'active' : ''}
+            >
+              {item} см.
+            </li>
+          ))}
         </ul>
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">от {price} ₽</div>
-        <button className="button button--outline button--add" onClick={addPizza}>
+        <button className="button button--outline button--add" onClick={onAddPizza}>
           <svg
             width="12"
             height="12"
